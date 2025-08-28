@@ -1,17 +1,25 @@
+
 "use client";
 
 interface TipButtonProps {
+  variant?: 'usdc';
   amount: number;
-  onTip: (amount: number) => void;
+  onClick?: () => void;
+  className?: string;
 }
 
-export function TipButton({ amount, onTip }: TipButtonProps) {
+export function TipButton({ 
+  variant = 'usdc', 
+  amount, 
+  onClick, 
+  className = '' 
+}: TipButtonProps) {
   return (
     <button
-      onClick={() => onTip(amount)}
-      className="bg-accent/10 hover:bg-accent/20 text-accent text-xs px-3 py-1 rounded-md transition-colors font-medium"
+      onClick={onClick}
+      className={`bg-accent hover:bg-accent/90 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 ${className}`}
     >
-      ${amount} USDC
+      💰 ${amount.toFixed(2)} USDC
     </button>
   );
 }

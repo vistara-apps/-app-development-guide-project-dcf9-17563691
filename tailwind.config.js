@@ -1,3 +1,4 @@
+
 module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -9,12 +10,10 @@ module.exports = {
         surface: 'hsl(220 15% 100%)',
         'text-primary': 'hsl(220 15% 15%)',
         'text-secondary': 'hsl(220 15% 45%)',
-        rekt: 'hsl(0 70% 55%)',
-        rich: 'hsl(120 60% 45%)',
       },
       spacing: {
         sm: '8px',
-        md: '12px',
+        md: '12px', 
         lg: '20px',
       },
       borderRadius: {
@@ -28,9 +27,6 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 200ms ease-out',
         'slide-up': 'slideUp 200ms ease-out',
-      },
-      fontFamily: {
-        'body': ['system-ui', 'sans-serif'],
       },
       fontSize: {
         'display': ['3rem', { lineHeight: '1.2', fontWeight: '700' }],

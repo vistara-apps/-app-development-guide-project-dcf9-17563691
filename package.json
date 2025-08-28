@@ -1,3 +1,4 @@
+
 {
   "name": "crypto-confessions",
   "version": "0.1.0",
@@ -19,17 +20,17 @@
     "viem": "^2.27.2",
     "wagmi": "^2.14.11",
     "pino-pretty": "^10.3.1",
+    "uuid": "^9.0.1",
+    "@types/uuid": "^9.0.8",
+    "arweave": "^1.14.4",
     "tailwindcss": "^3.4.1",
     "postcss": "^8",
-    "autoprefixer": "^10.4.21",
-    "uuid": "^9.0.1",
-    "date-fns": "^3.6.0"
+    "autoprefixer": "^10.4.21"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/uuid": "^9.0.8",
     "typescript": "^5",
     "eslint": "^8",
     "eslint-config-next": "15.3.3"

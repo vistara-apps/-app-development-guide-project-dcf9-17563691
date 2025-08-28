@@ -1,3 +1,4 @@
+
 "use client";
 
 import { type ReactNode } from "react";
@@ -14,7 +15,7 @@ export function Providers(props: { children: ReactNode }) {
           mode: "auto",
           theme: "crypto-confessions",
           name: "Crypto Confessions",
-          logo: "/logo.png",
+          logo: process.env.NEXT_PUBLIC_ICON_URL,
         },
       }}
     >

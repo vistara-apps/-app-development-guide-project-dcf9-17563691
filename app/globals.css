@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,16 +11,10 @@
     --surface: 220 15% 100%;
     --text-primary: 220 15% 15%;
     --text-secondary: 220 15% 45%;
-    --rekt: 0 70% 55%;
-    --rich: 120 60% 45%;
   }
   
   body {
-    @apply bg-bg text-text-primary;
-    font-family: system-ui, sans-serif;
-    font-size: 1rem;
-    line-height: 1.75;
-    font-weight: 400;
+    @apply bg-bg text-text-primary font-sans;
   }
 }
 
@@ -29,39 +24,15 @@
   }
   
   .btn-secondary {
-    @apply bg-surface hover:bg-surface/80 text-text-primary border border-text-secondary/20 px-4 py-2 rounded-md transition-colors duration-200;
-  }
-  
-  .btn-rekt {
-    @apply bg-rekt hover:bg-rekt/90 text-white px-4 py-2 rounded-md transition-colors duration-200;
-  }
-  
-  .btn-rich {
-    @apply bg-rich hover:bg-rich/90 text-white px-4 py-2 rounded-md transition-colors duration-200;
+    @apply bg-surface hover:bg-surface/90 text-text-primary border border-text-secondary/20 px-4 py-2 rounded-md transition-colors duration-200;
   }
   
   .card {
     @apply bg-surface border border-text-secondary/10 rounded-lg p-6 shadow-card;
   }
   
-  .story-card {
-    @apply bg-surface border border-text-secondary/10 rounded-lg p-4 shadow-card hover:shadow-lg transition-shadow duration-200;
-  }
-  
-  .story-card-rekt {
-    @apply story-card border-l-4 border-l-rekt;
-  }
-  
-  .story-card-rich {
-    @apply story-card border-l-4 border-l-rich;
-  }
-  
-  .input-field {
-    @apply bg-surface border border-text-secondary/20 rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none;
-  }
-  
-  .textarea-field {
-    @apply bg-surface border border-text-secondary/20 rounded-md px-3 py-2 text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none resize-none;
+  .container-app {
+    @apply max-w-xl mx-auto px-4;
   }
 }
 

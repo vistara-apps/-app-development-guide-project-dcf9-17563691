@@ -3,31 +3,28 @@
 
 interface PostButtonProps {
   variant?: 'primary' | 'secondary';
-  children: React.ReactNode;
   onClick?: () => void;
-  disabled?: boolean;
+  children: React.ReactNode;
   className?: string;
 }
 
 export function PostButton({ 
   variant = 'primary', 
-  children, 
   onClick, 
-  disabled = false,
-  className = ''
+  children, 
+  className = '' 
 }: PostButtonProps) {
-  const baseClasses = "font-medium px-4 py-3 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles = "px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105";
   
-  const variantClasses = {
-    primary: "btn-primary",
-    secondary: "btn-secondary"
+  const variantStyles = {
+    primary: "bg-primary hover:bg-primary/90 text-white shadow-lg",
+    secondary: "bg-surface hover:bg-surface/90 text-text-primary border border-text-secondary/20 shadow-card"
   };
 
   return (
     <button
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
       onClick={onClick}
-      disabled={disabled}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
     >
       {children}
     </button>

@@ -1,73 +1,86 @@
+
 "use client";
 
-import { useState } from "react";
-import { formatDistanceToNow } from "date-fns";
-import type { Story } from "../types";
-import { TipButton } from "./TipButton";
+import { Story } from "../types";
 
 interface StoryCardProps {
   story: Story;
+  variant?: 'rekt' | 'rich' | 'default';
+  onTip?: (storyId: string) => void;
+  onRead?: (story: Story) => void;
 }
 
-export function StoryCard({ story }: StoryCardProps) {
-  const [expanded, setExpanded] = useState(false);
-  const [tipAmount, setTipAmount] = useState(0);
+export function StoryCard({ 
+  story, 
+  variant = 'default',
+  onTip,
+  onRead 
+}: StoryCardProps) {
+  const getVariantStyles = () => {
+    switch (variant) {
+      case 'rekt':
+        return 'border-l-4 border-l-red-500 bg-red-50/50';
+      case 'rich':
+        return 'border-l-4 border-l-green-500 bg-green-50/50';
+      default:
+        return 'border-l-4 border-l-accent';
+    }
+  };
 
-  const cardClass = story.storyType === 'rekt' ? 'story-card-rekt' : 'story-card-rich';
-  const typeEmoji = story.storyType === 'rekt' ? '💸' : '💰';
-  const typeColor = story.storyType === 'rekt' ? 'text-rekt' : 'text-rich';
+  const getTypeEmoji = () => {
+    return story.storyType === 'rekt' ? '💸' : '🚀';
+  };
 
-  const content = story.content || "This is a sample story content that would be loaded from Arweave or IPFS. The user shared their crypto journey here...";
-  const displayContent = expanded ? content : content.slice(0, 150) + (content.length > 150 ? '...' : '');
-
-  const handleTip = (amount: number) => {
-    setTipAmount(prev => prev + amount);
-    // TODO: Implement actual tipping logic
-    console.log(`Tipping ${amount} USDC to story ${story.storyId}`);
+  const truncateContent = (content: string, maxLength: number = 150) => {
+    if (content.length <= maxLength) return content;
+    return content.substring(0, maxLength) + '...';
   };
 
   return (
-    <div className={`${cardClass} animate-fade-in`}>
+    <div className={`card ${getVariantStyles()} animate-fade-in cursor-pointer`}>
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-2">
-          <span className="text-lg">{typeEmoji}</span>
-          <span className={`text-sm font-medium ${typeColor}`}>
-            {story.storyType.toUpperCase()}
-          </span>
+          <span className="text-2xl">{getTypeEmoji()}</span>
+          <div>
+            <h3 className="text-heading text-text-primary font-semibold">
+              {story.title}
+            </h3>
+            <span className="text-sm text-text-secondary capitalize">
+              {story.storyType} story
+            </span>
+          </div>
         </div>
-        <span className="text-xs text-text-secondary">
-          {formatDistanceToNow(new Date(story.timestamp * 1000), { addSuffix: true })}
-        </span>
+        <div className="text-xs text-text-secondary">
+          {new Date(story.timestamp * 1000).toLocaleDateString()}
+        </div>
       </div>
 
-      {story.title && (
-        <h3 className="font-semibold text-text-primary mb-2">{story.title}</h3>
-      )}
-
-      <p className="text-body text-text-primary mb-4 leading-relaxed">
-        {displayContent}
+      <p 
+        className="text-body text-text-primary mb-4 cursor-pointer hover:text-primary transition-colors"
+        onClick={() => onRead?.(story)}
+      >
+        {truncateContent(story.content)}
       </p>
 
-      {content.length > 150 && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-accent text-sm font-medium hover:text-accent/80 transition-colors mb-4"
-        >
-          {expanded ? 'Show less' : 'Read more'}
-        </button>
-      )}
-
-      <div className="flex items-center justify-between pt-3 border-t border-text-secondary/10">
-        <div className="flex items-center space-x-4">
-          <TipButton amount={0.1} onTip={handleTip} />
-          <TipButton amount={0.25} onTip={handleTip} />
-          <TipButton amount={1.0} onTip={handleTip} />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4 text-sm text-text-secondary">
+          {story.tipCount && story.tipCount > 0 && (
+            <span>💰 {story.tipCount} tips</span>
+          )}
+          {story.totalTipped && story.totalTipped > 0 && (
+            <span>${story.totalTipped.toFixed(2)} USDC</span>
+          )}
         </div>
-        {tipAmount > 0 && (
-          <div className="text-sm text-accent font-medium">
-            +${tipAmount.toFixed(2)} USDC
-          </div>
-        )}
+        
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onTip?.(story.storyId);
+          }}
+          className="btn-primary text-sm px-3 py-1"
+        >
+          💰 Tip
+        </button>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -10,6 +11,7 @@ import {
   Identity,
   Address,
   Avatar,
+  EthBalance,
 } from "@coinbase/onchainkit/identity";
 import {
   ConnectWallet,
@@ -19,14 +21,13 @@ import {
 } from "@coinbase/onchainkit/wallet";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { StoryFeed } from "./components/StoryFeed";
-import { PostStoryModal } from "./components/PostStoryModal";
-import { FilterTabs } from "./components/FilterTabs";
+import { PostButton } from "./components/PostButton";
+import { PostModal } from "./components/PostModal";
 
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
   const [frameAdded, setFrameAdded] = useState(false);
-  const [showPostModal, setShowPostModal] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<'all' | 'rekt' | 'rich'>('all');
+  const [postModalOpen, setPostModalOpen] = useState(false);
 
   const addFrame = useAddFrame();
   const openUrl = useOpenUrl();
@@ -47,17 +48,18 @@ export default function App() {
       return (
         <button
           onClick={handleAddFrame}
-          className="text-accent text-sm font-medium hover:text-accent/80 transition-colors"
+          className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
         >
-          + Save
+          + Save Frame
         </button>
       );
     }
 
     if (frameAdded) {
       return (
-        <div className="flex items-center space-x-1 text-sm font-medium text-rich animate-fade-in">
-          <span>✓ Saved</span>
+        <div className="flex items-center space-x-1 text-sm font-medium text-green-600 animate-fade-in">
+          <span>✓</span>
+          <span>Saved</span>
         </div>
       );
     }
@@ -66,68 +68,69 @@ export default function App() {
   }, [context, frameAdded, handleAddFrame]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-bg">
-      <div className="w-full max-w-xl mx-auto px-4 py-3">
+    <div className="min-h-screen bg-bg">
+      <div className="container-app py-4">
+        {/* Header */}
         <header className="flex justify-between items-center mb-6">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">CC</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-text-primary">Crypto Confessions</h1>
-              <p className="text-xs text-text-secondary">Anonymous crypto stories</p>
-            </div>
+          <div>
+            <h1 className="text-display text-text-primary mb-1">
+              Crypto Confessions
+            </h1>
+            <p className="text-body text-text-secondary">
+              Share your wins and losses, anonymously
+            </p>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-4">
+            {saveFrameButton}
             <Wallet className="z-10">
               <ConnectWallet>
-                <Name className="text-inherit text-sm" />
+                <Name className="text-inherit" />
               </ConnectWallet>
               <WalletDropdown>
                 <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
                   <Avatar />
                   <Name />
                   <Address />
+                  <EthBalance />
                 </Identity>
                 <WalletDropdownDisconnect />
               </WalletDropdown>
             </Wallet>
-            {saveFrameButton}
           </div>
         </header>
 
-        <main className="flex-1 space-y-6">
-          <div className="text-center space-y-4">
-            <h2 className="text-heading text-text-primary">Share Your Story</h2>
-            <p className="text-body text-text-secondary">
-              Anonymous crypto wins and losses, stored forever on-chain
-            </p>
-            <button
-              onClick={() => setShowPostModal(true)}
-              className="btn-primary text-sm px-6 py-3 rounded-lg font-medium"
-            >
-              Share Your Story
-            </button>
-          </div>
+        {/* Share Story Button */}
+        <div className="mb-6">
+          <PostButton
+            variant="primary"
+            onClick={() => setPostModalOpen(true)}
+            className="w-full"
+          >
+            📝 Share Your Story
+          </PostButton>
+        </div>
 
-          <FilterTabs activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-          
-          <StoryFeed filter={activeFilter} />
+        {/* Story Feed */}
+        <main>
+          <StoryFeed />
         </main>
 
-        <footer className="mt-8 pt-4 flex justify-center">
+        {/* Footer */}
+        <footer className="mt-8 pt-6 border-t border-text-secondary/10 text-center">
           <button
-            className="text-text-secondary text-xs hover:text-text-primary transition-colors"
             onClick={() => openUrl("https://base.org/builders/minikit")}
+            className="text-text-secondary hover:text-text-primary text-sm transition-colors"
           >
             Built on Base with MiniKit
           </button>
         </footer>
-      </div>
 
-      {showPostModal && (
-        <PostStoryModal onClose={() => setShowPostModal(false)} />
-      )}
+        {/* Post Modal */}
+        <PostModal
+          isOpen={postModalOpen}
+          onClose={() => setPostModalOpen(false)}
+        />
+      </div>
     </div>
   );
 }
