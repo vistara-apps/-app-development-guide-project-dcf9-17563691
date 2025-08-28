@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,36 +5,165 @@
 @layer base {
   :root {
     --primary: 240 80% 50%;
+    --primary-hover: 240 80% 45%;
+    --primary-light: 240 80% 95%;
     --accent: 170 80% 45%;
+    --accent-hover: 170 80% 40%;
+    --accent-light: 170 80% 95%;
     --bg: 220 15% 98%;
     --surface: 220 15% 100%;
+    --surface-hover: 220 15% 97%;
     --text-primary: 220 15% 15%;
-    --text-secondary: 220 15% 45%;
+    --text-secondary: 220 15% 40%;
+    --text-tertiary: 220 15% 60%;
+    --success: 145 70% 40%;
+    --success-light: 145 70% 95%;
+    --error: 0 70% 50%;
+    --error-light: 0 70% 95%;
+    --warning: 40 100% 50%;
+    --warning-light: 40 100% 95%;
+    --rekt: 0 70% 50%;
+    --rekt-light: 0 70% 95%;
+    --rich: 145 70% 40%;
+    --rich-light: 145 70% 95%;
+  }
+  
+  html {
+    @apply scroll-smooth;
   }
   
   body {
-    @apply bg-bg text-text-primary font-sans;
+    @apply bg-bg text-text-primary font-sans antialiased;
+  }
+
+  /* Improved focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-bg;
+  }
+
+  /* Improved scrollbar for better UX */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-bg;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-text-tertiary/30 rounded-full hover:bg-text-tertiary/50 transition-colors;
   }
 }
 
 @layer components {
+  /* Enhanced button styles with better hover and focus states */
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-md transition-colors duration-200;
+    @apply bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-md 
+           transition-all duration-200 shadow-button hover:shadow-none
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           flex items-center justify-center;
   }
   
   .btn-secondary {
-    @apply bg-surface hover:bg-surface/90 text-text-primary border border-text-secondary/20 px-4 py-2 rounded-md transition-colors duration-200;
+    @apply bg-surface hover:bg-surface-hover text-text-primary border border-text-secondary/20 
+           px-4 py-2 rounded-md transition-all duration-200 shadow-button hover:shadow-none
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           flex items-center justify-center;
+  }
+
+  .btn-outline {
+    @apply bg-transparent hover:bg-primary-light text-primary border border-primary/20 
+           px-4 py-2 rounded-md transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           flex items-center justify-center;
+  }
+
+  .btn-text {
+    @apply bg-transparent hover:bg-primary-light text-primary
+           px-3 py-1.5 rounded-md transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none
+           flex items-center justify-center;
   }
   
+  /* Enhanced card with hover effect */
   .card {
-    @apply bg-surface border border-text-secondary/10 rounded-lg p-6 shadow-card;
+    @apply bg-surface border border-text-secondary/10 rounded-lg p-6 shadow-card
+           hover:shadow-card-hover transition-all duration-250;
+  }
+
+  /* Card variants */
+  .card-rekt {
+    @apply border-l-4 border-l-rekt bg-rekt-light/30;
+  }
+
+  .card-rich {
+    @apply border-l-4 border-l-rich bg-rich-light/30;
   }
   
   .container-app {
-    @apply max-w-xl mx-auto px-4;
+    @apply max-w-2xl mx-auto px-4 sm:px-6;
+  }
+
+  /* Form elements */
+  .form-input {
+    @apply w-full px-3 py-2 border border-text-secondary/20 rounded-md 
+           focus:outline-none focus:ring-2 focus:ring-primary
+           disabled:opacity-50 disabled:bg-bg;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-text-primary mb-1;
+  }
+
+  .form-helper {
+    @apply text-xs text-text-secondary mt-1;
+  }
+
+  .form-error {
+    @apply text-xs text-error mt-1;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-rekt {
+    @apply bg-rekt-light text-rekt;
+  }
+
+  .badge-rich {
+    @apply bg-rich-light text-rich;
+  }
+
+  /* Tooltip styles */
+  .tooltip {
+    @apply relative inline-block;
+  }
+
+  .tooltip-text {
+    @apply invisible absolute z-10 px-3 py-2 bg-text-primary text-white text-xs rounded-md
+           opacity-0 transition-opacity duration-200 whitespace-nowrap;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .tooltip:hover .tooltip-text {
+    @apply visible opacity-100;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply animate-pulse bg-text-secondary/20 rounded;
   }
 }
 
+/* Enhanced animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -44,4 +172,14 @@
 @keyframes slideUp {
   from { transform: translateY(10px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
